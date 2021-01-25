@@ -15,10 +15,10 @@ overlayComponent="_build/${cluster}/asg-node-refresh"
 ./bin/compile.sh $cluster
 
 # stackup cfn for component
-# if [[ -f "${overlayComponent}/cfn/template.yaml" ]]
-# then
-#   echo ":cloudformation: deploying cfn for $component"
-#   docker-compose run --rm stackup "k-${component}-${cluster}" up -t ${overlayComponent}/cfn/template.yaml
-# fi
+if [[ -f "${overlayComponent}/cfn/template.yaml" ]]
+then
+  echo ":cloudformation: deploying cfn for asg-node-refresh"
+  docker-compose run --rm stackup "asg-node-refresh-${cluster}" up -t ${overlayComponent}/cfn/template.yaml
+fi
 
-docker-compose run --rm kubectl apply --dry-run=client -f ${overlayComponent}
+docker-compose run --rm kubectl apply -f ${overlayComponent}
