@@ -42,3 +42,5 @@ spec:
               value: << .config.region >>
             - name: "LOG_LEVEL"
               value: "info"
+            - name: ASG_AUTO_DISCOVERY
+              value: asg:tag=k8s.io/cluster-autoscaler/enabled,k8s.io/cluster-autoscaler/<< .config.clusterName >>
