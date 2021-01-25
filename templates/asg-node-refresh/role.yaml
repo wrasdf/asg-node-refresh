@@ -1,0 +1,46 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: asg-node-refresh-role
+  labels:
+    repo: asg-node-refresh
+    addon: asg-node-refresh
+rules:
+  - apiGroups:
+      - "secrets.afterpay.com"
+    resources:
+      - kexternalsecrets
+    verbs:
+      - create
+      - delete
+      - deletecollection
+      - get
+      - list
+      - patch
+      - update
+      - watch
+  - apiGroups:
+      - ""
+    resources:
+      - secrets
+      - configmaps
+    verbs:
+      - "*"
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: asg-node-refresh-rolebinding
+  labels:
+    repo: asg-node-refresh
+    addon: asg-node-refresh
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: asg-node-refresh-role
+subjects:
+  - kind: ServiceAccount
+    name: asg-node-refresh
+    namespace: kube-system

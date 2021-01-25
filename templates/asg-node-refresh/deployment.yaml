@@ -1,0 +1,44 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: asg-node-refresh
+  namespace: kube-system
+  labels:
+    repo: asg-node-refresh
+    addon: asg-node-refresh
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      repo: asg-node-refresh
+      addon: asg-node-refresh
+  template:
+    metadata:
+      labels:
+        repo: asg-node-refresh
+        addon: asg-node-refresh
+      annotations:
+        prometheus.io/path: "/metrics"
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8085"
+    spec:
+      serviceAccountName: asg-node-refresh
+      containers:
+        - name: asg-node-refresh
+          imagePullPolicy: IfNotPresent
+          image: ikerry/asg-node-refresh:<< .config.asgNodeRefresh.version >>
+          resources:
+            limits:
+              cpu: 100m
+              memory: 256Mi
+            requests:
+              cpu: 50m
+              memory: 128Mi
+          env:
+            - name: AWS_DEFAULT_REGION
+              value: << .config.asgNodeRefresh.region >>
+            - name: AWS_REGION
+              value: << .config.asgNodeRefresh.region >>
+            - name: "LOG_LEVEL"
+              value: "info"

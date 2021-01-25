@@ -1,0 +1,6 @@
+clusterName: alpha-apse2-v1
+awsAccountId: 568431661506
+
+asgNodeRefresh:
+  version: v0.1.0
+  region: ap-southeast-2
