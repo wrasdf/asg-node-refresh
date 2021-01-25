@@ -1,4 +1,4 @@
-module github.com/wrasdf/asg-node-refresh
+module github.com/wrasdf/asg-node-roller
 
 go 1.15
 

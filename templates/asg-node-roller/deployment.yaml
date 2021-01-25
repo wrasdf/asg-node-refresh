@@ -2,32 +2,32 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: asg-node-refresh
+  name: asg-node-roller
   namespace: kube-system
   labels:
-    repo: asg-node-refresh
-    addon: asg-node-refresh
+    repo: asg-node-roller
+    addon: asg-node-roller
 spec:
   replicas: 1
   selector:
     matchLabels:
-      repo: asg-node-refresh
-      addon: asg-node-refresh
+      repo: asg-node-roller
+      addon: asg-node-roller
   template:
     metadata:
       labels:
-        repo: asg-node-refresh
-        addon: asg-node-refresh
+        repo: asg-node-roller
+        addon: asg-node-roller
       annotations:
         prometheus.io/path: "/metrics"
         prometheus.io/scrape: "true"
         prometheus.io/port: "8085"
     spec:
-      serviceAccountName: asg-node-refresh
+      serviceAccountName: asg-node-roller
       containers:
-        - name: asg-node-refresh
+        - name: asg-node-roller
           imagePullPolicy: IfNotPresent
-          image: ikerry/asg-node-refresh:<< .config.asgNodeRefresh.version >>
+          image: ikerry/asg-node-roller:<< .config.asgNodeRoller.version >>
           resources:
             limits:
               cpu: 100m

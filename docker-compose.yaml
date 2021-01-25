@@ -41,4 +41,4 @@ services:
     build:
       context: .
       target: release
-    image: ikerry/asg-node-refresh:${APP_TAG:-latest}
+    image: ikerry/asg-node-roller:${APP_TAG:-latest}

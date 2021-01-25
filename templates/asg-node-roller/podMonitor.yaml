@@ -2,19 +2,19 @@
 apiVersion: monitoring.coreos.com/v1
 kind: PodMonitor
 metadata:
-  name: asg-node-refresh
+  name: asg-node-roller
   namespace: kube-system
   labels:
-    repo: asg-node-refresh
-    addon: asg-node-refresh
+    repo: asg-node-roller
+    addon: asg-node-roller
 spec:
   namespaceSelector:
     matchNames:
       - kube-system
   selector:
     matchLabels:
-      repo: asg-node-refresh
-      addon: asg-node-refresh
+      repo: asg-node-roller
+      addon: asg-node-roller
   podMetricsEndpoints:
     - path: /metrics
       targetPort: 8085

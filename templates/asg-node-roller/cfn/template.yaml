@@ -1,12 +1,11 @@
 ---
 AWSTemplateFormatVersion: 2010-09-09
-Description: Resources to operate asg-node-refresh
-
+Description: Resources to operate asg-node-roller
 Resources:
   clusterAutoScalerRole:
     Type: AWS::IAM::Role
     Properties:
-      RoleName: asg-node-refresh-<< .config.clusterName >>
+      RoleName: asg-node-roller-<< .config.clusterName >>
       Path: /k8s/<< .config.clusterName >>/kubesystem/
       AssumeRolePolicyDocument:
         Fn::Sub:
@@ -24,7 +23,7 @@ Resources:
                         },
                         "Condition": {
                             "StringEquals": {
-                                "oidc.eks.${AWS::Region}.amazonaws.com/id/${id}:sub": "system:serviceaccount:kube-system:asg-node-refresh"
+                                "oidc.eks.${AWS::Region}.amazonaws.com/id/${id}:sub": "system:serviceaccount:kube-system:asg-node-roller"
                             }
                         }
                     }

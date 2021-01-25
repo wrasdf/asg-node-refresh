@@ -2,41 +2,49 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: asg-node-refresh-role
+  name: asg-node-roller-role
   labels:
-    repo: asg-node-refresh
-    addon: asg-node-refresh
+    repo: asg-node-roller
+    addon: asg-node-roller
 rules:
-  - apiGroups: [""]
+  - apiGroups:
+      - ""
     resources:
       - componentstatuses
       - events
       - namespaces
-      - nodes
       - persistentvolumes
       - resourcequotas
     verbs: ["get", "watch", "list"]
   - apiGroups:
       - ""
     resources:
-      - secrets
-      - configmaps
+      - nodes
     verbs:
-      - "*"
+      - *
+  - apiGroups:
+      - ""
+    resources:
+      - pods/eviction
+    verbs:
+      - get
+      - list
+      - watch
+      - create
 
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: asg-node-refresh-rolebinding
+  name: asg-node-roller-rolebinding
   labels:
-    repo: asg-node-refresh
-    addon: asg-node-refresh
+    repo: asg-node-roller
+    addon: asg-node-roller
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: asg-node-refresh-role
+  name: asg-node-roller-role
 subjects:
   - kind: ServiceAccount
-    name: asg-node-refresh
+    name: asg-node-roller
     namespace: kube-system
