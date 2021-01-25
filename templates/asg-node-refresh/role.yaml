@@ -7,19 +7,15 @@ metadata:
     repo: asg-node-refresh
     addon: asg-node-refresh
 rules:
-  - apiGroups:
-      - "secrets.afterpay.com"
+  - apiGroups: [""]
     resources:
-      - kexternalsecrets
-    verbs:
-      - create
-      - delete
-      - deletecollection
-      - get
-      - list
-      - patch
-      - update
-      - watch
+      - componentstatuses
+      - events
+      - namespaces
+      - nodes
+      - persistentvolumes
+      - resourcequotas
+    verbs: ["get", "watch", "list"]
   - apiGroups:
       - ""
     resources:
