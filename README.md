@@ -2,5 +2,5 @@
 
 The update methodology is simple:
 
-- Find the node longer than (By default TTL 48 hours) in ASG (every half an hour).
+- Find the node in cluster longer than 48 hours (By default TTL is 48 hours).
 - Terminate the selected node via ASG (As drain node logic has been covered by AWS ManagedNodeGroups)
