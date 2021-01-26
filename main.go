@@ -40,8 +40,7 @@ func main() {
   }
 
   ec2Client, _ := aws.EC2Client(region)
-
-  results, _ := aws.DescribeInstances(*ec2Client, &ec2.DescribeInstancesInput{})
+  results, _ := aws.DescribeInstances(ec2Client, &ec2.DescribeInstancesInput{})
 
   fmt.Println(results)
 
