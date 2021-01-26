@@ -2,14 +2,18 @@ package kube
 
 import (
   "context"
+  "time"
 
   "k8s.io/client-go/rest"
   "k8s.io/client-go/kubernetes"
   "k8s.io/client-go/tools/clientcmd"
+  "github.com/golang/protobuf/ptypes"
 
   metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
   corev1 "k8s.io/api/core/v1"
   appsv1 "k8s.io/api/apps/v1"
+
+  utils "github.com/wrasdf/asg-node-roller/services/utils"
 )
 
 
@@ -54,4 +58,14 @@ func GetPods(client kubernetes.Interface, ns string, selector string) (*corev1.P
     return nil, err
   }
   return pods, nil
+}
+
+func IsLongerThanTTL(node corev1.Node, ttlHours string) bool {
+  nodeTimestamp, _ := ptypes.TimestampProto(node.CreationTimestamp.Time)
+  nowTimestamp := time.Now().Unix()
+  ttl, _ := utils.StringToInt64(ttlHours)
+  if ((nowTimestamp - nodeTimestamp.GetSeconds())/3600 - ttl) > 0 {
+    return true
+  }
+  return false
 }

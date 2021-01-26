@@ -3,14 +3,11 @@ package main
 import (
   "fmt"
   "flag"
-  "time"
   "path/filepath"
 
   "k8s.io/client-go/kubernetes"
   "k8s.io/client-go/util/homedir"
   kube "github.com/wrasdf/asg-node-roller/services/kube"
-  utils "github.com/wrasdf/asg-node-roller/services/utils"
-  "github.com/golang/protobuf/ptypes"
 
   "k8s.io/klog/v2"
 )
@@ -38,15 +35,15 @@ func main() {
   nodes, _ := kube.GetNodes(client)
 
   for _, node := range nodes.Items {
-    nodeTimestamp, _ := ptypes.TimestampProto(node.CreationTimestamp.Time)
-    nowTimestamp := time.Now().Unix()
-    ttlHours, _ := utils.StringToInt(ttlHours)
-    if ((nowTimestamp - nodeTimestamp.GetSeconds())/3600 - ttlHours) > 0 {
+    if kube.IsLongerThanTTL(node, ttlHours) {
+
+      // Step2: Find ASG by node name
       fmt.Printf("Node: %s \n", node.Name)
+
     }
   }
 
-  // Step2: Find ASG by node name
+
 
   // Step3: Terminate node via ASG
 
