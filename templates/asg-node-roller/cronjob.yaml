@@ -38,6 +38,7 @@ spec:
               command:
                 - /asg-node-roller
                 - --ttlHours=48
+                - --region=<< .config.region >>
               resources:
                 limits:
                   cpu: 100m
@@ -45,9 +46,4 @@ spec:
                 requests:
                   cpu: 50m
                   memory: 128Mi
-              env:
-                - name: AWS_DEFAULT_REGION
-                  value: << .config.region >>
-                - name: AWS_REGION
-                  value: << .config.region >>
 {{- end }}

@@ -17,7 +17,7 @@ import (
 )
 
 
-func BuildConfig(kubeconfig string) (*rest.Config, error) {
+func buildConfig(kubeconfig string) (*rest.Config, error) {
   if kubeconfig != "" {
 		cfg, err := clientcmd.BuildConfigFromFlags("", kubeconfig)
 		if err != nil {
@@ -31,6 +31,16 @@ func BuildConfig(kubeconfig string) (*rest.Config, error) {
 		return nil, err
 	}
 	return cfg, nil
+}
+
+func KubeClient(kubeconfig string) (*kubernetes.Clientset, error){
+  config, err:= buildConfig(kubeconfig)
+  if err != nil {
+  	return nil, err
+  }
+
+  kubeClient := kubernetes.NewForConfigOrDie(config)
+  return kubeClient, nil
 }
 
 // kube.GetNodes(client)
@@ -60,6 +70,7 @@ func GetPods(client kubernetes.Interface, ns string, selector string) (*corev1.P
   return pods, nil
 }
 
+// kube.IsLongerThanTTL(node, "48")
 func IsLongerThanTTL(node corev1.Node, ttlHours string) bool {
   nodeTimestamp, _ := ptypes.TimestampProto(node.CreationTimestamp.Time)
   nowTimestamp := time.Now().Unix()
