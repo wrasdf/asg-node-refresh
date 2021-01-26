@@ -17,8 +17,8 @@ func EC2Client(region string) (*ec2.Client, error) {
 
 func DescribeInstances(client ec2.Client, input *ec2.DescribeInstancesInput) (*ec2.DescribeInstancesOutput, error) {
   results, err := client.DescribeInstances(context.TODO(), input)
-	if err != nil {
-		return nil, err
-	}
+  if err != nil {
+    return nil, err
+  }
   return results, nil
 }

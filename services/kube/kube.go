@@ -20,23 +20,23 @@ import (
 func buildConfig(kubeconfig string) (*rest.Config, error) {
   if kubeconfig != "" {
 		cfg, err := clientcmd.BuildConfigFromFlags("", kubeconfig)
-		if err != nil {
-			return nil, err
-		}
-		return cfg, nil
+    if err != nil {
+      return nil, err
+    }
+    return cfg, nil
 	}
 
 	cfg, err := rest.InClusterConfig()
-	if err != nil {
-		return nil, err
-	}
-	return cfg, nil
+  if err != nil {
+    return nil, err
+  }
+  return cfg, nil
 }
 
 func KubeClient(kubeconfig string) (*kubernetes.Clientset, error){
   config, err:= buildConfig(kubeconfig)
   if err != nil {
-  	return nil, err
+    return nil, err
   }
 
   kubeClient := kubernetes.NewForConfigOrDie(config)
