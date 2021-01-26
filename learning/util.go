@@ -19,14 +19,10 @@ func getNodeEvents(c kubernetes.Interface, nodeName string) []v1.Event {
 // nodes, err := client.CoreV1().Nodes().List(ontext.TODO(), metav1.ListOptions{LabelSelector: "app=<APPNAME>"})
 
 
-deploymentsClient := clientset.AppsV1().Deployments(ns)
-    deployments, err := deploymentsClient.List(metav1.ListOptions{})
-    if err != nil {
-        panic(err.Error())
-    }
-    for _, deploy := range deployments.Items {
-        fmt.Println(deploy.ObjectMeta.SelfLink)
-        //      printDeploymentSpecJson(deploy)
-        //      printDeploymentSpecYaml(deploy)
+for _, deploy := range deployments.Items {
+    fmt.Println(deploy.Name, deploy.CreationTimestamp)
+    fmt.Println(deploy.ObjectMeta.GetCreationTimestamp(), deploy.ObjectMeta.GetLabels())
 
-    }
+    //      printDeploymentSpecYaml(deploy)
+
+}

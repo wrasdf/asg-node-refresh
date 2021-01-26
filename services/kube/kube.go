@@ -1,4 +1,5 @@
-package utils
+package kube
+
 import (
   "context"
 
@@ -13,7 +14,7 @@ import (
 
 
 func BuildConfig(kubeconfig string) (*rest.Config, error) {
-	if kubeconfig != "" {
+  if kubeconfig != "" {
 		cfg, err := clientcmd.BuildConfigFromFlags("", kubeconfig)
 		if err != nil {
 			return nil, err
@@ -28,18 +29,29 @@ func BuildConfig(kubeconfig string) (*rest.Config, error) {
 	return cfg, nil
 }
 
+// kube.GetNodes(client)
 func GetNodes(client kubernetes.Interface) (*corev1.NodeList, error) {
   nodes, err := client.CoreV1().Nodes().List(context.TODO(), metav1.ListOptions{})
   if err != nil {
-		return nil, err
-	}
+    return nil, err
+  }
   return nodes, nil
 }
 
-func GetDeployments(client kubernetes.Interface, ns string) (*appsv1.DeploymentList, error) {
-  deploys, err := client.AppsV1().Deployments(ns).List(context.TODO(), metav1.ListOptions{})
+// kube.GetDeployments(client, "pe", "component=ops-kube-synthetic")
+func GetDeployments(client kubernetes.Interface, ns string, selector string) (*appsv1.DeploymentList, error) {
+  deploys, err := client.AppsV1().Deployments(ns).List(context.TODO(), metav1.ListOptions{LabelSelector: selector})
   if err != nil {
     return nil, err
   }
   return deploys, nil
+}
+
+// kube.GetPods(client, "pe", "component=ops-kube-synthetic")
+func GetPods(client kubernetes.Interface, ns string, selector string) (*corev1.PodList, error) {
+  pods, err := client.CoreV1().Pods(ns).List(context.TODO(), metav1.ListOptions{LabelSelector: selector})
+  if err != nil {
+    return nil, err
+  }
+  return pods, nil
 }

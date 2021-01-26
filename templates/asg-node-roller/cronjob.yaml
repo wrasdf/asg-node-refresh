@@ -1,0 +1,53 @@
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: asg-node-roller
+  namespace: kube-system
+  labels:
+    app: asg-node-roller
+    repo: asg-node-roller
+spec:
+  schedule: "*/30 * * * *"
+  startingDeadlineSeconds: 60
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 5
+  jobTemplate:
+    metadata:
+      labels:
+        app: asg-node-roller
+        repo: asg-node-roller
+    spec:
+      backoffLimit: 3
+      activeDeadlineSeconds: 900
+      template:
+        metadata:
+          labels:
+            app: asg-node-roller
+            repo: asg-node-roller
+          annotations:
+            scheduler.alpha.kubernetes.io/critical-pod: ""
+        spec:
+          serviceAccountName: asg-node-roller
+          restartPolicy: OnFailure
+          containers:
+            - name: asg-node-roller
+              imagePullPolicy: IfNotPresent
+              image: ikerry/asg-node-roller:<< .config.asgNodeRoller.version >>
+              command:
+                - /asg-node-roller
+                - --ttlHours=48
+              resources:
+                limits:
+                  cpu: 100m
+                  memory: 256Mi
+                requests:
+                  cpu: 50m
+                  memory: 128Mi
+              env:
+                - name: AWS_DEFAULT_REGION
+                  value: << .config.region >>
+                - name: AWS_REGION
+                  value: << .config.region >>
+{{- end }}
