@@ -26,7 +26,7 @@ func buildConfig(kubeconfig string) (*rest.Config, error) {
     return cfg, nil
   }
 
-	cfg, err := rest.InClusterConfig()
+  cfg, err := rest.InClusterConfig()
   if err != nil {
     return nil, err
   }
