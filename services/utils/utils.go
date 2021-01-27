@@ -11,3 +11,17 @@ func StringToInt64(s string) (int64, error) {
   }
   return result, nil
 }
+
+func ToJsonString(data interface{}) (string, error) {
+	results, err := json.Marshal(data)
+	if err != nil {
+		return "", err
+	}
+	return string(results), nil
+}
+
+func JsonStringToMap (s string) map[string]interface{} {
+  var results map[string]interface{}
+  json.Unmarshal([]byte(s), &results)
+  return results
+}

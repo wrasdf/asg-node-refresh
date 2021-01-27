@@ -17,3 +17,7 @@ metav1:
 
 - aws-sdk-go-v2
   - https://pkg.go.dev/github.com/aws/aws-sdk-go-v2/service/ec2#Client
+
+- go with json
+  - https://yourbasic.org/golang/json-example/
+  - https://www.sohamkamani.com/golang/parsing-json/

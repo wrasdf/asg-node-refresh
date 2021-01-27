@@ -15,6 +15,15 @@ import (
 )
 
 
+type FruitBasket struct {
+    Name    string
+    Fruit   []string
+    Id      int64  `json:"ref"`
+    private string // An unexported field is not encoded.
+    Created time.Time
+}
+
+
 func main() {
 
   klog.InitFlags(nil)
