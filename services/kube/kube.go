@@ -16,6 +16,10 @@ import (
   utils "github.com/wrasdf/asg-node-roller/services/utils"
 )
 
+type KubeClient struct {
+	client    kubernetes.Interface
+	namespace string
+}
 
 func buildConfig(kubeconfig string) (*rest.Config, error) {
   if kubeconfig != "" {
@@ -33,42 +37,49 @@ func buildConfig(kubeconfig string) (*rest.Config, error) {
   return cfg, nil
 }
 
-func KubeClient(kubeconfig string) (*kubernetes.Clientset, error){
+func NewKubeClient(kubeconfig string) (*KubeClient, error) {
+
   config, err:= buildConfig(kubeconfig)
   if err != nil {
     return nil, err
   }
 
-  kubeClient := kubernetes.NewForConfigOrDie(config)
-  return kubeClient, nil
+  return &KubeClient{
+    client: kubernetes.NewForConfigOrDie(config),
+    namespace: "default",
+  }, nil
 }
 
-// kube.GetNodes(client)
-func GetNodes(client kubernetes.Interface) (*corev1.NodeList, error) {
-  nodes, err := client.CoreV1().Nodes().List(context.TODO(), metav1.ListOptions{})
+func (c *KubeClient) SetNamespace(ns string) {
+	if len(ns) > 0 {
+		c.namespace = ns
+	}
+}
+
+func (c *KubeClient) GetNodes() (*corev1.NodeList, error) {
+  nodes, err := c.client.CoreV1().Nodes().List(context.TODO(), metav1.ListOptions{})
   if err != nil {
     return nil, err
   }
   return nodes, nil
 }
 
-// kube.GetDeployments(client, "pe", "component=ops-kube-synthetic")
-func GetDeployments(client kubernetes.Interface, ns string, selector string) (*appsv1.DeploymentList, error) {
-  deploys, err := client.AppsV1().Deployments(ns).List(context.TODO(), metav1.ListOptions{LabelSelector: selector})
+func (c *KubeClient) GetDeployments(selector string) (*appsv1.DeploymentList, error) {
+  deploys, err := c.client.AppsV1().Deployments(c.namespace).List(context.TODO(), metav1.ListOptions{LabelSelector: selector})
   if err != nil {
     return nil, err
   }
   return deploys, nil
 }
 
-// kube.GetPods(client, "pe", "component=ops-kube-synthetic")
-func GetPods(client kubernetes.Interface, ns string, selector string) (*corev1.PodList, error) {
-  pods, err := client.CoreV1().Pods(ns).List(context.TODO(), metav1.ListOptions{LabelSelector: selector})
+func (c *KubeClient) GetPods(selector string) (*corev1.PodList, error) {
+  pods, err := c.client.CoreV1().Pods(c.namespace).List(context.TODO(), metav1.ListOptions{LabelSelector: selector})
   if err != nil {
     return nil, err
   }
   return pods, nil
 }
+
 
 // kube.IsLongerThanTTL(node, "48")
 func IsLongerThanTTL(node corev1.Node, ttlHours string) bool {

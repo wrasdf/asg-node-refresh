@@ -6,17 +6,27 @@ import (
     "github.com/aws/aws-sdk-go-v2/service/ec2"
 )
 
-func EC2Client(region string) (*ec2.Client, error) {
+type EC2Client struct {
+  client  ec2.Client
+  region  string
+}
+
+func NewEC2Client(region string) (*EC2Client, error) {
+
   cfg, err := config.LoadDefaultConfig(context.TODO(), config.WithRegion(region))
   if err != nil {
     return nil, err
   }
-  client := ec2.NewFromConfig(cfg)
-  return client, nil
+
+  return &EC2Client{
+    client: *ec2.NewFromConfig(cfg),
+    region: region,
+  }, nil
+
 }
 
-func DescribeInstances(client *ec2.Client, input *ec2.DescribeInstancesInput) (*ec2.DescribeInstancesOutput, error) {
-  results, err := client.DescribeInstances(context.TODO(), input)
+func (c *EC2Client) DescribeInstances(input *ec2.DescribeInstancesInput) (*ec2.DescribeInstancesOutput, error) {
+  results, err := c.client.DescribeInstances(context.TODO(), input)
   if err != nil {
     return nil, err
   }

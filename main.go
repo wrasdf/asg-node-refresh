@@ -15,15 +15,6 @@ import (
 )
 
 
-type FruitBasket struct {
-    Name    string
-    Fruit   []string
-    Id      int64  `json:"ref"`
-    private string // An unexported field is not encoded.
-    Created time.Time
-}
-
-
 func main() {
 
   klog.InitFlags(nil)
@@ -38,8 +29,8 @@ func main() {
 
 
   // Step1: Get node, which is ruuning time longger than 48 hours in cluster
-  kubeClient, _ := kube.KubeClient(kubeconfig)
-  kubeNodes, _ := kube.GetNodes(kubeClient)
+  k8sClient, _ := kube.NewKubeClient(kubeconfig)
+  kubeNodes, _ := k8sClient.GetNodes()
 
   for _, node := range kubeNodes.Items {
     if kube.IsLongerThanTTL(node, ttlHours) {
@@ -48,8 +39,8 @@ func main() {
     }
   }
 
-  ec2Client, _ := aws.EC2Client(region)
-  results, _ := aws.DescribeInstances(ec2Client, &ec2.DescribeInstancesInput{})
+  ec2Client, _ := aws.NewEC2Client(region)
+  results, _ := ec2Client.DescribeInstances(&ec2.DescribeInstancesInput{})
 
   fmt.Println(results)
 
