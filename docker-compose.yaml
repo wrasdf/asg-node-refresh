@@ -28,12 +28,12 @@ services:
 
   stackup:
     <<: *base
-    image: realestate/stackup:1.7.0
+    image: realestate/stackup:latest
     entrypoint: stackup
 
   kubectl:
     <<: *base
-    image: ikerry/kubectl:v1.18.15
+    image: ikerry/kubectl:v1.19.6
     entrypoint: kubectl
 
   release:

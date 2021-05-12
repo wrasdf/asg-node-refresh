@@ -1,0 +1,6 @@
+clusterName: alpha-euwe1-v1
+
+aws:
+  accountId: 568431661506
+  region: eu-west-1
+  clusterId: 0B7EB81A026E6BF93F378719ACF383E0

@@ -1,0 +1,6 @@
+clusterName: alpha-usea1-v1
+
+aws:
+  accountId: 568431661506
+  region: us-east-1
+  clusterId: 254D962CFE7CCC9D745B78AF67C33134

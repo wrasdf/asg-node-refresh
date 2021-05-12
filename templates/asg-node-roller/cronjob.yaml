@@ -1,3 +1,4 @@
+<<- $data := (ds "data") ->>
 ---
 apiVersion: batch/v1beta1
 kind: CronJob
@@ -34,11 +35,11 @@ spec:
           containers:
             - name: asg-node-roller
               imagePullPolicy: IfNotPresent
-              image: ikerry/asg-node-roller:<< .config.asgNodeRoller.version >>
+              image: ikerry/asg-node-roller:<< $data.version >>
               command:
                 - /asg-node-roller
                 - --ttlHours=48
-                - --region=<< .config.region >>
+                - --region=<< .config.aws.region >>
               resources:
                 limits:
                   cpu: 100m

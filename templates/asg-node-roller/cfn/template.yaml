@@ -8,38 +8,16 @@ Resources:
       RoleName: asg-node-roller-<< .config.clusterName >>
       Path: /k8s/<< .config.clusterName >>/kubesystem/
       AssumeRolePolicyDocument:
-        Fn::Sub:
-          - |
-            {
-                "Version": "2012-10-17",
-                "Statement": [
-                    {
-                        "Effect": "Allow",
-                        "Action": [
-                            "sts:AssumeRoleWithWebIdentity"
-                        ],
-                        "Principal": {
-                            "Federated": "arn:aws:iam::${AWS::AccountId}:oidc-provider/oidc.eks.${AWS::Region}.amazonaws.com/id/${id}"
-                        },
-                        "Condition": {
-                            "StringEquals": {
-                                "oidc.eks.${AWS::Region}.amazonaws.com/id/${id}:sub": "system:serviceaccount:kube-system:asg-node-roller"
-                            }
-                        }
-                    }
-                ]
-            }
-          -
-            id:
-              Fn::Select:
-                - 1
-                - Fn::Split:
-                    - "//"
-                    - Fn::Select:
-                        - 0
-                        - Fn::Split:
-                            - "."
-                            - Fn::ImportValue: EksCluster-Endpoint-<< .config.clusterName >>
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Action:
+              - sts:AssumeRoleWithWebIdentity
+            Principal:
+              Federated: arn:aws:iam::<< .config.aws.accountId >>:oidc-provider/oidc.eks.<< .config.aws.region >>.amazonaws.com/id/<< .config.aws.clusterId >>
+            Condition:
+              StringEquals:
+                oidc.eks.<< .config.aws.region >>.amazonaws.com/id/<< .config.aws.clusterId >>:sub: system:serviceaccount:kube-system:asg-node-roller
       Policies:
         - PolicyName: access-to-asg
           PolicyDocument:
