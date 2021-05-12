@@ -1,17 +1,16 @@
 package main
 
 import (
-  "fmt"
   "flag"
   "path/filepath"
 
   "k8s.io/client-go/util/homedir"
+  "github.com/aws/aws-sdk-go-v2/service/autoscaling"
+  "k8s.io/klog/v2"
+
   kube "github.com/wrasdf/asg-node-roller/services/kube"
   aws "github.com/wrasdf/asg-node-roller/services/aws"
 
-  "github.com/aws/aws-sdk-go-v2/service/autoscaling"
-
-  "k8s.io/klog/v2"
 )
 
 
@@ -39,6 +38,7 @@ func main() {
 
   if len(ttlNodes) > 0 {
     asgClient, _ := aws.NewASGClient(region)
+    // TODO fix this
     asgClient.TerminateInstanceInAutoScalingGroup(&autoscaling.TerminateInstanceInAutoScalingGroupInput{
       InstanceId: (string)ttlNodes[0],
       ShouldDecrementDesiredCapacity: (bool)false,

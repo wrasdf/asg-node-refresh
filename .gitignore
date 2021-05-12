@@ -5,7 +5,7 @@
 *.dll
 *.so
 *.dylib
-asg-node-roller
+bin/asg-node-roller
 _build
 
 # Test binary, build with `go test -c`
