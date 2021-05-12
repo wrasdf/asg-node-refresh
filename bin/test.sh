@@ -2,5 +2,5 @@
 
 set -euo pipefail
 
-docker-compose build test
-docker-compose run --rm test
+docker-compose build sh
+docker-compose run --rm sh -c "go test ./tests"
