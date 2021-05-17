@@ -18,6 +18,16 @@ metav1:
 - aws-sdk-go-v2
   - https://pkg.go.dev/github.com/aws/aws-sdk-go-v2/service/ec2#Client
   - https://pkg.go.dev/github.com/aws/aws-sdk-go-v2/service/autoscaling#Client
+  - https://pkg.go.dev/github.com/aws/aws-sdk-go-v2/service/ec2@v1.6.0/types#NetworkInterface
+
+
+
+
+
+- aws-skd-go
+  - https://gist.github.com/eferro/651fbb72851fa7987fc642c8f39638eb
+  - https://docs.aws.amazon.com/sdk-for-go/api/service/ec2/#DescribeInstancesInput
+    - network-interface.private-dns-name
 
 - go with json
   - https://yourbasic.org/golang/json-example/
