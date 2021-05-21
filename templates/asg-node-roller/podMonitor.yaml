@@ -18,5 +18,5 @@ spec:
   podMetricsEndpoints:
     - path: /metrics
       targetPort: 8085
-      interval: 10s
+      interval: 30s
       scrapeTimeout: 30s
