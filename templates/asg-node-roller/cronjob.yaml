@@ -36,6 +36,8 @@ spec:
             - name: asg-node-roller
               imagePullPolicy: IfNotPresent
               image: ikerry/asg-node-roller:<< $data.version >>
+              ports:
+                - containerPort: 8085
               command:
                 - /asg-node-roller
                 - --ttlHours=48
