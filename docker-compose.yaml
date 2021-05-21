@@ -26,6 +26,13 @@ services:
     image: hairyhenderson/gomplate:v3.8.0-alpine
     entrypoint: gomplate
 
+  release:
+    <<: *base
+    build:
+      context: .
+      target: release
+    image: ikerry/asg-node-roller:${APP_TAG:-latest}
+
   stackup:
     <<: *base
     image: realestate/stackup:latest
@@ -33,12 +40,5 @@ services:
 
   kubectl:
     <<: *base
-    image: lachlanevenson/k8s-kubectl:v1.19.9
+    image: ikerry/aws-kubectl:v1.19.9
     entrypoint: kubectl
-
-  release:
-    <<: *base
-    build:
-      context: .
-      target: release
-    image: ikerry/asg-node-roller:${APP_TAG:-latest}

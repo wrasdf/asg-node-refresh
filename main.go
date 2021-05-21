@@ -62,9 +62,9 @@ func main() {
 			ShouldDecrementDesiredCapacity: &falseBool,
 		})
 		if err != nil {
-			fmt.Println("ERROR: %s", err)
+			fmt.Printf("ERROR: %s", err)
 			return
 		}
-		fmt.Println("The Node: %s will be drained soon.", Node)
+		fmt.Printf("The Node: %s will be drained soon.", Node)
 	}
 }

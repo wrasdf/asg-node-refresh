@@ -83,10 +83,11 @@ func (c *KubeClient) GetPods(selector string) (*corev1.PodList, error) {
 
 // kube.IsLongerThanTTL(node, "48")
 func IsLongerThanTTL(node corev1.Node, ttlHours string) bool {
-  nodeTimestamp, _ := ptypes.TimestampProto(node.CreationTimestamp.Time)
-  nowTimestamp := time.Now().Unix()
+  utc, _ := time.LoadLocation("UTC")
+  nodeTimestamp, _ := ptypes.TimestampProto(node.CreationTimestamp.Time.In(utc))
+  nowTimestamp := time.Now().In(utc).Unix()
   ttl, _ := utils.StringToInt64(ttlHours)
-  if ((nowTimestamp - nodeTimestamp.GetSeconds())/3600 - ttl) > 0 {
+  if ((nowTimestamp - nodeTimestamp.GetSeconds())/3600 - ttl) >= 0 {
     return true
   }
   return false

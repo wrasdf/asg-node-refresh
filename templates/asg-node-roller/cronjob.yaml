@@ -9,7 +9,7 @@ metadata:
     app: asg-node-roller
     repo: asg-node-roller
 spec:
-  schedule: "*/10 * * * *"
+  schedule: "*/30 * * * *"
   startingDeadlineSeconds: 60
   concurrencyPolicy: Forbid
   successfulJobsHistoryLimit: 1
@@ -40,7 +40,7 @@ spec:
                 - containerPort: 8085
               command:
                 - /asg-node-roller
-                - --ttlHours=1
+                - --ttlHours=2
                 - --region=<< .config.aws.region >>
               resources:
                 limits:
@@ -49,4 +49,3 @@ spec:
                 requests:
                   cpu: 50m
                   memory: 128Mi
-{{- end }}
