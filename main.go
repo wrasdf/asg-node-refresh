@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"os"
 	"fmt"
 	"path/filepath"
 
@@ -26,8 +27,10 @@ func main() {
 	var region string
 
 	flag.StringVar(&kubeconfig, "kubeconfig", filepath.Join(homedir.HomeDir(), ".kube", "config"), "(optional) Absolute path to the kubeconfig file")
-	flag.StringVar(&ttlHours, "ttlHours", "48", "TTL time for node")
-	flag.StringVar(&region, "region", "ap-southeast-2", "AWS Region")
+	flag.StringVar(&ttlHours, "ttlHours", os.Getenv("ttlHours"), "TTL time for node")
+	flag.StringVar(&region, "region", os.Getenv("region"), "AWS Region")
+
+	flag.Parse()
 
 	k8sClient, _ := kube.NewKubeClient(kubeconfig)
 	ec2Client, _ := awsLib.NewEC2Client(region)
@@ -60,6 +63,7 @@ func main() {
 		})
 		if err != nil {
 			fmt.Println("ERROR: %s", err)
+			return
 		}
 		fmt.Println("The Node: %s will be drained soon.", Node)
 	}

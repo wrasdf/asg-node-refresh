@@ -9,8 +9,8 @@ The update methodology is simple:
 - ./bin/test.sh
 
 ## How to deploy
-- ./bin/release.sh v0.2.1
-- ./bin/deploy.sh alpha-apse2-v1 v0.2.1
+- ./bin/release.sh v1.0.1
+- ./bin/deploy.sh alpha-apse2-v1 v1.0.1
 
 ## How to compile env files
 - ./bin/compile.sh alpha-apse2-v1 v0.2.1
